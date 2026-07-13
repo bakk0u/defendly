@@ -1,0 +1,1 @@
+"""Defendly interview preparation backend."""

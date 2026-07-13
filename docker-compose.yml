@@ -1,0 +1,56 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_PATH: /data/interview_agent.db
+      JWT_SECRET: ${JWT_SECRET:-local-docker-secret-change-me}
+      CORS_ORIGINS: http://localhost:3001
+      OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
+      DEFAULT_LLM_PROVIDER: ${DEFAULT_LLM_PROVIDER:-ollama}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - defendly-data:/data
+    depends_on:
+      ollama-pull:
+        condition: service_completed_successfully
+
+  web:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+
+  ollama-pull:
+    image: ollama/ollama:latest
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["ollama pull $${OLLAMA_MODEL:-qwen2.5:7b-instruct}"]
+    depends_on:
+      - ollama
+    volumes:
+      - ollama-data:/root/.ollama
+
+volumes:
+  defendly-data:
+  ollama-data:

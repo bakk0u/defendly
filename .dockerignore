@@ -1,0 +1,11 @@
+.git
+.openai
+.vinext
+.wrangler
+node_modules
+dist
+backend/__pycache__
+backend/data
+*.log
+.env
+.env.local
