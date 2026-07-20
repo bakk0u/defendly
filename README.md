@@ -19,6 +19,12 @@ Defendly turns every CV line into a personalized interview syllabus. It extracts
 
 ### Normal development mode
 
+Download the recommended local model once:
+
+```bat
+ollama pull qwen2.5:14b-instruct
+```
+
 Install the backend packages:
 
 ```bat
@@ -32,7 +38,7 @@ Start the API in the first Command Prompt:
 cd /d "C:\Users\anasb\Documents\interview agent"
 set JWT_SECRET=change-this-local-secret
 set OLLAMA_ENABLED=true
-set OLLAMA_MODEL=qwen2.5:7b-instruct
+set OLLAMA_MODEL=qwen2.5:14b-instruct
 set OLLAMA_BASE_URL=http://127.0.0.1:11434
 "C:\Users\anasb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
@@ -54,7 +60,7 @@ Docker starts the frontend, backend, Ollama, downloads the configured model once
 ```bat
 cd /d "C:\Users\anasb\Documents\interview agent"
 set JWT_SECRET=replace-with-a-long-random-secret
-set OLLAMA_MODEL=qwen2.5:7b-instruct
+set OLLAMA_MODEL=qwen2.5:14b-instruct
 docker compose up --build
 ```
 
