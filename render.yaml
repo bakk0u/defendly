@@ -2,13 +2,14 @@ services:
   - type: web
     name: defendly-api
     runtime: docker
+    plan: starter
     dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /api/health
     envVars:
       - key: OLLAMA_ENABLED
         value: "false"
       - key: DEFAULT_LLM_PROVIDER
-        value: fallback
+        value: openai
       - key: DATABASE_PATH
         value: /var/data/interview_agent.db
       - key: JWT_SECRET
@@ -24,6 +25,8 @@ services:
           envVarKey: RENDER_EXTERNAL_HOSTNAME
       - key: OPENAI_API_KEY
         sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: GEMINI_API_KEY
@@ -36,6 +39,7 @@ services:
   - type: web
     name: defendly-web
     runtime: node
+    plan: free
     buildCommand: npm ci && npm run build
     startCommand: npm run start -- --host 0.0.0.0 --port $PORT
     envVars:
