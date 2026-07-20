@@ -1,5 +1,6 @@
 .git
-.openai
+.idea
+.venv
 .vinext
 .wrangler
 node_modules
