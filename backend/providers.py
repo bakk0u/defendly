@@ -69,7 +69,7 @@ class OllamaProvider(LLMProvider):
 
     def __init__(self) -> None:
         super().__init__(
-            os.getenv("OLLAMA_MODEL", "qwen2.5:7b-instruct"),
+            os.getenv("OLLAMA_MODEL", "qwen3:14b"),
             os.getenv("OLLAMA_ENABLED", "true").lower() == "true",
         )
         self.base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")

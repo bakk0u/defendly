@@ -1,5 +1,7 @@
 # Defendly — AI Interview Preparation Agent
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/bakk0u/defendly)
+
 Defendly turns every CV line into a personalized interview syllabus. It extracts evidence, generates targeted questions, evaluates answers, identifies concept gaps, and adapts future practice to the candidate's weakest areas.
 
 ## What is included
@@ -22,31 +24,35 @@ Defendly turns every CV line into a personalized interview syllabus. It extracts
 Download the recommended local model once:
 
 ```bat
-ollama pull qwen2.5:14b-instruct
+ollama pull qwen3:14b
 ```
 
-Install the backend packages:
+Clone the repository and install the backend packages:
 
 ```bat
-cd /d "C:\Users\anasb\Documents\interview agent"
-"C:\Users\anasb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" -m pip install -r backend\requirements.txt
+git clone https://github.com/bakk0u/defendly.git
+cd defendly
+py -3.12 -m venv .venv
+call .venv\Scripts\activate.bat
+python -m pip install -r backend\requirements.txt
 ```
 
 Start the API in the first Command Prompt:
 
 ```bat
-cd /d "C:\Users\anasb\Documents\interview agent"
+cd /d "path\to\defendly"
 set JWT_SECRET=change-this-local-secret
 set OLLAMA_ENABLED=true
-set OLLAMA_MODEL=qwen2.5:14b-instruct
+set OLLAMA_MODEL=qwen3:14b
 set OLLAMA_BASE_URL=http://127.0.0.1:11434
-"C:\Users\anasb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+set DEFAULT_LLM_PROVIDER=ollama
+.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 Start the web app in a second Command Prompt:
 
 ```bat
-cd /d "C:\Users\anasb\Documents\interview agent"
+cd /d "path\to\defendly"
 npm install
 npm run dev
 ```
@@ -58,9 +64,9 @@ Open `http://localhost:3001`. API documentation is available at `http://localhos
 Docker starts the frontend, backend, Ollama, downloads the configured model once, and keeps both the model and database in named volumes:
 
 ```bat
-cd /d "C:\Users\anasb\Documents\interview agent"
+cd /d "path\to\defendly"
 set JWT_SECRET=replace-with-a-long-random-secret
-set OLLAMA_MODEL=qwen2.5:14b-instruct
+set OLLAMA_MODEL=qwen3:14b
 docker compose up --build
 ```
 
@@ -80,11 +86,22 @@ Models can be overridden with `OPENAI_MODEL`, `ANTHROPIC_MODEL`, `GEMINI_MODEL`,
 
 ## Deploy on Render
 
-1. Push the repository to GitHub.
-2. In Render, choose **New > Blueprint** and select the repository.
-3. Render reads `render.yaml` and creates the API, web service, secret, and persistent disk.
-4. Add at least one provider key when prompted if you want cloud AI. Without a key, the deterministic fallback still works.
-5. After deployment, set `DEFAULT_LLM_PROVIDER` on the API to `openai`, `anthropic`, or `gemini` if desired.
+Click **Deploy to Render** above, or open Render and choose **New > Blueprint**, connect GitHub, and select this repository. Render reads `render.yaml` and creates:
+
+- `defendly-web`, the public React application
+- `defendly-api`, the FastAPI service
+- a persistent disk for accounts, CVs, questions, and interview progress
+- generated production session secrets and cross-service URLs
+
+Enter `OPENAI_API_KEY` when Render prompts for secrets. The hosted deployment defaults to OpenAI; if the key is omitted or invalid, Defendly uses its deterministic fallback. The API uses a paid Render instance because persistent disks are not available on free web services.
+
+After the first deployment succeeds, copy the `defendly-web` `onrender.com` URL. This is the link visitors use; they do not need Python, Node.js, Ollama, Docker, or any source packages installed.
+
+To show the live application on the GitHub repository page, open the repository, click the gear next to **About**, paste the Render URL into **Website**, and save. From a terminal, the equivalent command is:
+
+```bat
+gh repo edit bakk0u/defendly --homepage "https://YOUR-DEFENDLY-WEB-URL.onrender.com"
+```
 
 A hosted API cannot reach Ollama on your laptop. For cloud inference, use one of the configured cloud providers or host Ollama on reachable GPU infrastructure.
 
@@ -92,7 +109,7 @@ A hosted API cannot reach Ollama on your laptop. For cloud inference, use one of
 
 ```bat
 npm test
-"C:\Users\anasb\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" -c "from backend.test_api import test_authenticated_cv_to_realtime_ready_flow; test_authenticated_cv_to_realtime_ready_flow(); print('backend tests passed')"
+.venv\Scripts\python.exe -c "from backend.test_api import test_authenticated_cv_to_realtime_ready_flow; test_authenticated_cv_to_realtime_ready_flow(); print('backend tests passed')"
 ```
 
 The backend test covers registration, authenticated CV extraction, question generation, evaluation, mastery scoring, provider discovery, and the WebSocket interview flow.
