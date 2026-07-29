@@ -2,39 +2,27 @@ services:
   - type: web
     name: defendly-api
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./backend/Dockerfile
     healthCheckPath: /api/health
     envVars:
       - key: OLLAMA_ENABLED
         value: "false"
       - key: DEFAULT_LLM_PROVIDER
-        value: openai
+        value: fallback
       - key: DATABASE_PATH
-        value: /var/data/interview_agent.db
+        value: /tmp/defendly/interview_agent.db
       - key: JWT_SECRET
         generateValue: true
       - key: COOKIE_SECURE
         value: "true"
       - key: ACCESS_TOKEN_MINUTES
-        value: "10080"
+        value: "120"
       - key: CORS_ORIGINS
         fromService:
           type: web
           name: defendly-web
           envVarKey: RENDER_EXTERNAL_HOSTNAME
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: OPENAI_MODEL
-        value: gpt-4.1-mini
-      - key: ANTHROPIC_API_KEY
-        sync: false
-      - key: GEMINI_API_KEY
-        sync: false
-    disk:
-      name: defendly-data
-      mountPath: /var/data
-      sizeGB: 1
 
   - type: web
     name: defendly-web
