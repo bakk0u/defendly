@@ -1,21 +1,31 @@
-# Defendly — AI Interview Preparation Agent
+<picture>
+  <source media="(max-width: 600px)" srcset="docs/readme/hero-mobile.svg">
+  <img src="docs/readme/hero.svg" width="100%" alt="Defendly — Every CV line. A learning opportunity.">
+</picture>
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/bakk0u/defendly)
+<p align="center"><a href="#getting-started"><b>Local setup ↗</b></a> &nbsp; · &nbsp; <a href="#technical-reference"><b>Provider configuration ↗</b></a> &nbsp; · &nbsp; <a href="#technical-reference"><b>Deployment ↗</b></a></p>
 
-Defendly turns every CV line into a personalized interview syllabus. It extracts evidence, generates targeted questions, evaluates answers, identifies concept gaps, and adapts future practice to the candidate's weakest areas.
+An AI interview-preparation application that turns CV evidence into targeted questions, evaluates answers and adapts practice to concept gaps.
 
-## What is included
+## Evidence at a glance
 
-- Account registration and sign-in with Argon2 password hashing and signed session tokens
-- CV text and PDF extraction with Pydantic-validated structured output
-- LangChain prompt orchestration for extraction, question generation, and scoring
-- Ollama, OpenAI, Anthropic, Google Gemini, and deterministic fallback providers
-- TF-IDF concept coverage, confidence scoring, Bayesian mastery estimates, and adaptive question selection
-- Live WebSocket interview sessions with saved messages and evaluations
-- A normalized SQLite database for users, CVs, projects, skills, experiences, questions, attempts, chat sessions, messages, and mastery snapshots
-- Responsive React + TypeScript interface
-- Docker Compose for the web app, API, Ollama, model download, and persistent data
-- A Render deployment blueprint
+| Focus | What this repository contains |
+| :--- | :--- |
+| **Application** | React + TypeScript interface and a FastAPI backend. |
+| **Sessions** | Saved conversations and live WebSocket interviews. |
+| **Inference** | Ollama, cloud providers and a deterministic fallback. |
+
+## How the pieces fit
+
+<picture>
+  <source media="(max-width: 600px)" srcset="docs/readme/workflow-mobile.svg">
+  <img src="docs/readme/workflow.svg" width="100%" alt="Extract: CV evidence and skills / Practice: Targeted interview questions / Adapt: Answer evaluation and mastery">
+</picture>
+
+## Getting started
+
+<details>
+<summary><b>Open setup, execution and configuration instructions</b></summary>
 
 ## Run locally on Windows
 
@@ -113,3 +123,32 @@ npm test
 ```
 
 The backend test covers registration, authenticated CV extraction, question generation, evaluation, mastery scoring, provider discovery, and the WebSocket interview flow.
+
+</details>
+
+## Technical reference
+
+<details>
+<summary><b>Project context and reference</b></summary>
+
+# Defendly — AI Interview Preparation Agent
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/bakk0u/defendly)
+
+Defendly turns every CV line into a personalized interview syllabus. It extracts evidence, generates targeted questions, evaluates answers, identifies concept gaps, and adapts future practice to the candidate's weakest areas.
+
+## What is included
+
+- Account registration and sign-in with Argon2 password hashing and signed session tokens
+- CV text and PDF extraction with Pydantic-validated structured output
+- LangChain prompt orchestration for extraction, question generation, and scoring
+- Ollama, OpenAI, Anthropic, Google Gemini, and deterministic fallback providers
+- TF-IDF concept coverage, confidence scoring, Bayesian mastery estimates, and adaptive question selection
+- Live WebSocket interview sessions with saved messages and evaluations
+- A normalized SQLite database for users, CVs, projects, skills, experiences, questions, attempts, chat sessions, messages, and mastery snapshots
+- Responsive React + TypeScript interface
+- Docker Compose for the web app, API, Ollama, model download, and persistent data
+- A Render deployment blueprint
+
+</details>
+
