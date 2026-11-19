@@ -5,7 +5,7 @@ services:
       dockerfile: backend/Dockerfile
     environment:
       DATABASE_PATH: /data/interview_agent.db
-      JWT_SECRET: ${JWT_SECRET:-local-docker-secret-change-me}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET before starting the API}
       CORS_ORIGINS: http://localhost:3001
       OLLAMA_ENABLED: ${OLLAMA_ENABLED:-true}
       OLLAMA_BASE_URL: http://ollama:11434
