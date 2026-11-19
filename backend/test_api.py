@@ -68,3 +68,12 @@ def test_authenticated_cv_to_realtime_ready_flow():
             })
             assert socket.receive_json()["type"] == "status"
             assert socket.receive_json()["type"] == "evaluation"
+
+
+def test_missing_signing_key_stops_token_creation(monkeypatch):
+    import pytest
+    from backend.security import create_access_token
+
+    monkeypatch.delenv("JWT_SECRET", raising=False)
+    with pytest.raises(RuntimeError, match="JWT_SECRET"):
+        create_access_token(1, "test@example.org")

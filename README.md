@@ -5,7 +5,7 @@
 
 <p align="center"><a href="#getting-started"><b>Local setup ↗</b></a> &nbsp; · &nbsp; <a href="#technical-reference"><b>Provider configuration ↗</b></a> &nbsp; · &nbsp; <a href="#technical-reference"><b>Deployment ↗</b></a></p>
 
-An AI interview-preparation application that turns CV evidence into targeted questions, evaluates answers and adapts practice to concept gaps.
+Upload a CV, choose a project and practise answering questions about the work. Defendly saves the interview so you can revisit answers and see which concepts need another attempt.
 
 ## Evidence at a glance
 
@@ -31,7 +31,7 @@ An AI interview-preparation application that turns CV evidence into targeted que
 
 ### Normal development mode
 
-Download the recommended local model once:
+For local model inference, download the model once. To practise without a model download, set DEFAULT_LLM_PROVIDER to fallback and OLLAMA_ENABLED to false in the API command below.
 
 ```bat
 ollama pull qwen3:14b

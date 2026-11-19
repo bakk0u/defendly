@@ -13,7 +13,10 @@ ALGORITHM = "HS256"
 
 
 def secret_key() -> str:
-    return os.getenv("JWT_SECRET", "dev-only-change-me-before-deployment")
+    secret = os.getenv("JWT_SECRET")
+    if not secret or not secret.strip():
+        raise RuntimeError("Set JWT_SECRET before issuing or verifying tokens")
+    return secret
 
 
 def hash_password(password: str) -> str:
